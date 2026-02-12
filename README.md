@@ -8,6 +8,7 @@ A general collection of knowledge, notes, and research related to software secur
 - [CIA Triad (Cornerstones)](./foundations/cia-triad.md)
 - [Security Policies](./foundations/security-policies.md)
 - [Exploitation Basics](./foundations/exploitation-basics.md)
+- [Fundamental Design Flaws (Strong Coupling / Shatter Attack)](./foundations/fundamental-design-flaws.md)
 
 ## Vulnerabilities
 - [Fundamentals](./vulnerabilities/fundamentals.md)
