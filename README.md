@@ -3,6 +3,7 @@
 A general collection of knowledge, notes, and research related to software security.
 
 ## Foundations
+- [Authentication](./foundations/authentication.md)
 - [Software Design Fundamentals](./foundations/software-design-fundamentals.md)
 - [Defense in Depth](./foundations/defense-in-depth.md)
 - [CIA Triad (Cornerstones)](./foundations/cia-triad.md)

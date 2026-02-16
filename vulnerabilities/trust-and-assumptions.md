@@ -5,6 +5,7 @@ Vulnerabilities often arise when designers and developers make unfounded assumpt
 ## Trust Relationships
 Different components in a system place varying degrees of trust in each other.
 - **Transitive Trust:** If System A trusts Component B, and Component B trusts Network C, then System A indirectly trusts Network C.
+    - *Example (Solaris):* Attackers exploited `rpc.statd` (public interface) to send commands to `automountd` (loopback only) because both ran as root and trusted each other transitively. (See [Fundamental Design Flaws](./foundations/fundamental-design-flaws.md) for details).
 - **Misplaced Trust:** Assumptions that a trusted component is impervious to interference. If this trust is misplaced, the entire system can fall like dominos.
 
 ## Unfounded Assumptions

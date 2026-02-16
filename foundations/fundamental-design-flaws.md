@@ -39,4 +39,39 @@ The "Shatter" class of vulnerabilities (popularized by Chris Paget) exploited th
 - **Coupling:** The message queue tightly coupled processes that should have been isolated, allowing one to manipulate the execution flow of the other.
 
 ---
+
+## Case Study: Exploiting Transitive Trusts (Solaris automountd)
+
+Transitive trust occurs when a trusted relationship between two components is exploited to reach a third, supposedly isolated component.
+
+### The Context
+- **automountd:** A Solaris RPC program running as `root`. It was designed to handle mounting/unmounting for the kernel. For security, it was available only via three protected loopback transports, accepting commands only from `root`.
+- **rpc.statd:** Another `root` service that listens on public network interfaces (TCP/UDP) for NFS server monitoring.
+
+### The Attack Vector
+The vulnerability relied on the implicit trust shared between all processes running under the same account (`root`).
+
+1.  **Redirection:** An attacker contacts the public `rpc.statd` service and registers the `automountd` program to receive crash notifications.
+2.  **Trigger:** The attacker informs `rpc.statd` that a monitored server has "crashed."
+3.  **Exploitation:** `rpc.statd` contacts `automountd` over the local loopback interface. While the RPC message format doesn't match perfectly, it can be manipulated to decode into a valid command for `automountd`.
+4.  **Escalation:** Because the request arrives via the loopback transport from a `root` process (`rpc.statd`), `automountd` trusts it as a legitimate request from the kernel and executes the attacker's command.
+
+### The Lesson
+- **Shared Trust:** Implicit trust between processes with the same privileges can be a fatal flaw if one process has a public interface and the other does not.
+- **Assumptions:** Developers often become lenient with data format validation when the source is "trusted" (e.g., local loopback).
+
+---
+
+## Failure Handling
+
+Proper failure handling is critical for both usability and security, but these two goals often conflict.
+
+### Usability vs. Security
+- **Usability Goal:** Recover gracefully, continue processing, and provide detailed diagnostic information to help the user solve the problem.
+- **Security Goal:** Assume any irregular data is a malicious attack. The safest response is to terminate the session, log the event, and provide the absolute minimum feedback to the user (to avoid leaking system details).
+
+### The Security Takeaway
+In a security-sensitive context, **accuracy of security requirements must supersede usability.** Attempting to "work around" unexpected input often provides the attacker with additional avenues for exploitation.
+
+---
 *Source: The Art of Software Security Assessment (Dowd, McDonald, Schuh)*
