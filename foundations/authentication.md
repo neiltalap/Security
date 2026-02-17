@@ -27,4 +27,24 @@ A common mistake where authentication information is presented but the validatio
 - **sadmind (Solaris):** A remote root flaw occurred because it treated `AUTH_UNIX` as sufficient validation for running commands on behalf of the client.
 
 ---
+
+### 3. Insufficient Validation
+Authentication systems can be fundamentally flawed even if they work "correctly" in their intended environment. This often happens in programmatic authentication between systems rather than user-facing login forms.
+
+- **IP-Based Trust:** Many network daemons (`rshd`, `rlogind`, even `sshd`) can be configured to trust a peer based solely on source IP.
+    - **Vulnerability:** UDP is trivially spoofed. TCP can be spoofed or hijacked (especially on local networks).
+- **One-Way Authentication:** Distributed systems often authenticate only the client or only the server. Attackers can masquerade as the unauthenticated peer to launch attacks.
+
+### 4. Homemade Authentication
+Developers often underestimate the complexity of cryptographic protocols and attempt to roll their own.
+
+- **The Fallacy:** "I'll send a challenge, they encrypt it with a shared secret, and I'll verify it."
+- **Common Flaws:** Replay attacks, oracle attacks, and weak entropy.
+
+#### Case Study: Checkpoint Firewall-1 (FWN/1)
+Thomas Lopatic discovered a vulnerability in the FWN/1 protocol.
+- **Protocol:** Peers exchange a random number `R1` and a hash `Hash(R1 + SharedKey)`.
+- **The Flaw:** The protocol did not prevent replay. An attacker could simply capture a valid `R1` and `Hash` pair and replay them to the server to authenticate, as the server had no way to know `R1` was "stale."
+
+---
 *Source: The Art of Software Security Assessment (Dowd, McDonald, Schuh)*
