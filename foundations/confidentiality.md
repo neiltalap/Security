@@ -35,7 +35,19 @@ Protocols to safely exchange keys over an open network (RSA, Diffie-Hellman, El 
 - **Risk:** Must be authenticated to prevent Man-in-the-Middle (MITM) attacks (e.g., using PKI/Certificates).
 
 ## Common Vulnerabilities
-**Homemade Encryption:** The primary cause of confidentiality vulnerabilities. Encryption is mathematically complex; developers often incorrectly implement "simple" logic that is trivially breakable (e.g., Checkpoint FWN/1 replay attack, as discussed in the Authentication chapter). **Always use established, vetted libraries.**
+
+### 1. Storing Sensitive Data Unnecessarily
+A major design flaw is maintaining sensitive data without a valid requirement.
+- **Passwords:** Validating a password does **not** require storing it in clear text. Store a hash instead.
+- **Data Minimization:** Designs must properly classify data sensitivity and store only what is absolutely required.
+
+### 2. Lack of Necessary Encryption
+Failing to encrypt data traversing hostile environments.
+- **Data in Transit:** Clear-text communication over public/untrusted networks (e.g., using TELNET) is a critical vulnerability.
+- **Data at Rest:** Sensitive database fields or files on disk should be encrypted to protect against physical theft or unauthorized access.
+
+### 3. Homemade Encryption
+The primary cause of confidentiality vulnerabilities. Encryption is mathematically complex; developers often incorrectly implement "simple" logic that is trivially breakable (e.g., Checkpoint FWN/1 replay attack). **Always use established, vetted libraries.**
 
 ---
 *Source: The Art of Software Security Assessment (Dowd, McDonald, Schuh)*
