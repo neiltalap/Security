@@ -36,7 +36,10 @@ A general collection of knowledge, notes, and research related to software secur
 ## Endpoint Security
 - [Endpoint Protection](./endpoint-security/endpoint-protection.md)
 
-## Legal and Compliance
+## OWASP / Emerging Threats
+- [AI Agent Security](./owasp/ai-agent-security.md)
+
+## Legal & Compliance
 - [Data Protection Frameworks](./legal-and-compliance/data-protection-frameworks.md)
 - [Computer Misuse Act 1990](./legal-and-compliance/computer-misuse-act.md)
 - [Legal Limitations for Security Professionals](./legal-and-compliance/legal-for-security-pros.md)
